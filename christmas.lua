@@ -7,6 +7,20 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+Tab:AddButton({
+	Name = "Add Speed",
+	Callback = function()
+    local RunService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+
+RunService.RenderStepped:Connect(function()
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.WalkSpeed = 30
+    end
+end)
+  	end    
+})
+
 
 
 
@@ -62,6 +76,7 @@ Tab:AddButton({
   	end    
 })
 OrionLib:Init()
+
 
 
 
