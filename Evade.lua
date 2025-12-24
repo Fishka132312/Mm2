@@ -202,24 +202,26 @@ local Tab = Window:MakeTab({
 })
 
 local UserInputService = game:GetService("UserInputService")
-local Camera = workspace.CurrentCamera
 
 Tab:AddSlider({
-    Name = "Character FOV",
-    Min = 30, -- Минимальный FOV (обычно 70 стандарт)
-    Max = 120, -- Максимальный FOV
+    Name = "Field of View",
+    Min = 30,
+    Max = 120,
     Default = 70,
     Color = Color3.fromRGB(255, 255, 255),
     Increment = 1,
-    ValueName = "Deg",
+    ValueName = "FOV",
     Callback = function(Value)
-        -- Проверка: если зажат Ctrl, ничего не делаем
+        -- Твоя настройка: если нажат Ctrl, скрипт стопается
         if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) or UserInputService:IsKeyDown(Enum.KeyCode.RightControl) then
             return
         end
 
-        -- Меняем FOV персонажа
-        Camera.FieldOfView = Value
+        -- Находим камеру напрямую через workspace
+        local camera = game:GetService("Workspace").CurrentCamera
+        if camera then
+            camera.FieldOfView = Value
+        end
     end    
 })
 
@@ -268,6 +270,7 @@ Tab:AddButton({
   	end    
 })
 OrionLib:Init()
+
 
 
 
