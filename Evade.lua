@@ -198,6 +198,43 @@ end)
   	end    
 })
 
+
+Tab:AddButton({
+	Name = "Stop Farm if dev join",
+	Callback = function()
+			local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+local isScriptActive = true
+
+local function pressKeyC()
+    if isScriptActive and #Players:GetPlayers() > 1 then
+        print("Игрок зашел! Имитирую нажатие 'C'...")
+        
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.C, false, game)
+        task.wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.C, false, game)
+    end
+end
+
+Players.PlayerAdded:Connect(function()
+    pressKeyC()
+end)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.LeftControl or input.KeyCode == Enum.KeyCode.RightControl then
+        isScriptActive = false
+        print("Скрипт отключен. Нажатие 'C' при входе игроков деактивировано.")
+    end
+end)
+
+if #Players:GetPlayers() > 1 then
+    pressKeyC()
+end
+  	end    
+})
+
 --------------------------------MISC-----------------------------
 local Tab = Window:MakeTab({
 	Name = "Misc",
@@ -269,6 +306,7 @@ Tab:AddButton({
   	end    
 })
 OrionLib:Init()
+
 
 
 
