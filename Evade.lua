@@ -298,6 +298,18 @@ end)
   	end    
 })
 
+Tab:AddButton({
+	Name = "AntiAfk",
+	Callback = function()
+			local VirtualUser = game:GetService("VirtualUser")
+
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:TypeKey(Enum.KeyCode.Space.Value)
+end)
+  	end    
+})
+
 
 Tab:AddButton({
 	Name = "Infinite Yield",
@@ -306,6 +318,7 @@ Tab:AddButton({
   	end    
 })
 OrionLib:Init()
+
 
 
 
