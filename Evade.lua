@@ -201,6 +201,28 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local UserInputService = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+
+Tab:AddSlider({
+    Name = "Character FOV",
+    Min = 30, -- Минимальный FOV (обычно 70 стандарт)
+    Max = 120, -- Максимальный FOV
+    Default = 70,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 1,
+    ValueName = "Deg",
+    Callback = function(Value)
+        -- Проверка: если зажат Ctrl, ничего не делаем
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) or UserInputService:IsKeyDown(Enum.KeyCode.RightControl) then
+            return
+        end
+
+        -- Меняем FOV персонажа
+        Camera.FieldOfView = Value
+    end    
+})
+
 Tab:AddButton({
 	Name = "Fps boost",
 	Callback = function()
@@ -246,6 +268,7 @@ Tab:AddButton({
   	end    
 })
 OrionLib:Init()
+
 
 
 
