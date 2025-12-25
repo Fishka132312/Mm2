@@ -117,7 +117,7 @@ local player = Players.LocalPlayer
 
 local BASE_SPEED = 16 
 local REACH_DISTANCE = 3.5 
-local APPEAR_DELAY = {min = 1, max = 4}
+local APPEAR_DELAY = {min = 1, max = 2}
 local isRunning = true
 
 print("--- Легитный автосбор (с задержкой реакции) запущен ---")
@@ -330,6 +330,7 @@ local a,b,c,d,e=loadstring,request or http_request or (http and http.request) or
   	end  
 })
 OrionLib:Init()
+
 
 
 
