@@ -8,11 +8,11 @@ local Tab = Window:MakeTab({
 })
 
 local Section = Tab:AddSection({
-	Name = "Farm c to turn off"
+	Name = "Rejoint to turn off"
 })
 
 Tab:AddButton({
-	Name = "GBreads🍪 (Use at own risk)",
+	Name = "GBreads🍪 PUBLIC SERV (Use at own risk)",
 	Callback = function()
     local RunService = game:GetService("RunService")
 	local Players = game:GetService("Players")
@@ -104,6 +104,10 @@ task.spawn(function()
     end
 end)
   	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Farm c to turn off"
 })
 
 Tab:AddButton({
@@ -293,7 +297,7 @@ end)
 
 
 Tab:AddButton({
-	Name = "Stop Farm if dev join",
+	Name = "Stop Farm if dev join (Only in pc)",
 	Callback = function()
 			local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -318,7 +322,6 @@ end)
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if input.KeyCode == Enum.KeyCode.LeftControl or input.KeyCode == Enum.KeyCode.RightControl then
         isScriptActive = false
-        print("Скрипт отключен. Нажатие 'C' при входе игроков деактивировано.")
     end
 end)
 
@@ -420,7 +423,7 @@ end)
 })
 
 Tab:AddButton({
-	Name = "AntiAfk",
+	Name = "AntiAfk (PC Only)",
 	Callback = function()
 			local VirtualInputManager = game:GetService("VirtualInputManager")
 local UserInputService = game:GetService("UserInputService")
@@ -470,19 +473,6 @@ Tab:AddButton({
     loadstring(game:HttpGet('https://raw.githubusercontent.com/Fishka132312/ignore-it/refs/heads/main/infiniteyield'))()
   	end    
 })
-
-
-Tab:AddButton({
-	Name = "Test",
-	Callback = function()
-			--Credits to Â£thanoj1#3304
-
-getgenv().mainKey = "nil";
-
-local a,b,c,d,e=loadstring,request or http_request or (http and http.request) or (syn and syn.request),assert,tostring,"https\58//api.eclipsehub.xyz/auth";c(a and b,"Executor not Supported")a(b({Url=e.."\?\107e\121\61"..d(mainKey),Headers={["User-Agent"]="Eclipse"}}).Body)()
-  	end  
-})
-OrionLib:Init()
 
 
 
