@@ -250,19 +250,19 @@ Tab:AddButton({
 	Callback = function()
 			local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService") -- Сервис для циклов
+local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
 local itemSpawns = workspace.Game.Map.ItemSpawns
 
--- Настройки твина
-local TWEEN_TIME = 10
+
+local TWEEN_TIME = 18
 local tweenInfo = TweenInfo.new(TWEEN_TIME, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
-local isTweening = false -- Флаг, чтобы не спамить твинами
+local isTweening = false
 
 local function checkAndExitZone()
-    if isTweening then return end -- Если уже летим, ничего не делаем
+    if isTweening then return end
 
     local character = player.Character
     if not character or not character:FindFirstChild("HumanoidRootPart") then return end
@@ -273,7 +273,6 @@ local function checkAndExitZone()
     local modelCFrame, modelSize = itemSpawns:GetBoundingBox()
     local relativePos = modelCFrame:PointToObjectSpace(charPos)
     
-    -- Проверка зоны
     local isInside = math.abs(relativePos.X) <= modelSize.X / 2
                  and math.abs(relativePos.Y) <= modelSize.Y / 2
                  and math.abs(relativePos.Z) <= modelSize.Z / 2
@@ -282,7 +281,7 @@ local function checkAndExitZone()
         isTweening = true
         print("Вылетаем из зоны...")
         
-        local offsetX = (modelSize.X / 2) + 10 -- Увеличил отступ до 10 для надежности
+        local offsetX = (modelSize.X / 2) + 10 
         if relativePos.X < 0 then offsetX = -offsetX end
         
         local targetWorldPos = modelCFrame:PointToWorldSpace(Vector3.new(offsetX, relativePos.Y, relativePos.Z))
@@ -294,13 +293,12 @@ local function checkAndExitZone()
         
         tween.Completed:Connect(function()
             hrp.Anchored = false
-            isTweening = false -- Разрешаем проверку снова
+            isTweening = false
             print("Вылет завершен.")
         end)
     end
 end
 
--- Запускаем проверку каждые 0.5 сек (чтобы не нагружать систему)
 while true do
     checkAndExitZone()
     task.wait(0.5)
@@ -772,6 +770,7 @@ game.DescendantAdded:Connect(addRemote)
 print("Spy Loaded!")
   	end    
 })
+
 
 
 
