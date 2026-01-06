@@ -586,6 +586,71 @@ end
   	end    
 })
 
+Tab:AddButton({
+	Name = "Show all remotes",
+	Callback = function()
+			local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+local pgui = lp:WaitForChild("PlayerGui")
+
+local sg = Instance.new("ScreenGui", pgui)
+sg.Name = "SimpleRemoteSpy"
+sg.ResetOnSpawn = false
+
+local frame = Instance.new("ScrollingFrame", sg)
+frame.Size = UDim2.new(0, 250, 0, 350)
+frame.Position = UDim2.new(0, 50, 0, 50)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.CanvasSize = UDim2.new(0, 0, 20, 0) 
+frame.Visible = true
+
+local layout = Instance.new("UIListLayout", frame)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+local toggle = Instance.new("TextButton", sg)
+toggle.Size = UDim2.new(0, 100, 0, 30)
+toggle.Position = UDim2.new(0, 50, 0, 20)
+toggle.Text = "OPEN/CLOSE"
+toggle.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+toggle.TextColor3 = Color3.new(1, 1, 1)
+
+toggle.MouseButton1Click:Connect(function()
+    frame.Visible = not frame.Visible
+end)
+
+local function addRemote(obj)
+    if obj:IsA("RemoteEvent") then
+        local remoteFrame = Instance.new("Frame", frame)
+        remoteFrame.Size = UDim2.new(1, 0, 0, 40)
+        remoteFrame.BackgroundTransparency = 1
+
+        local btn = Instance.new("TextButton", remoteFrame)
+        btn.Size = UDim2.new(0.8, 0, 0.9, 0)
+        btn.Position = UDim2.new(0.1, 0, 0.05, 0)
+        btn.Text = "FIRE: " .. obj.Name
+        btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        btn.TextColor3 = Color3.new(1, 1, 1)
+        btn.TextScaled = true
+
+        btn.MouseButton1Click:Connect(function()
+            obj:FireServer()
+            btn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+            task.wait(0.2)
+            btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        end)
+    end
+end
+
+for _, v in pairs(game:GetDescendants()) do
+    addRemote(v)
+end
+
+game.DescendantAdded:Connect(addRemote)
+
+print("Spy Loaded!")
+  	end    
+})
+
 
 
 
