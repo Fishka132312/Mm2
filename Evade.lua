@@ -204,7 +204,7 @@ smoothExit()
 })
 
 Tab:AddButton({
-	Name = "Go outside map",
+	Name = "Go outside map TP",
 	Callback = function()
 			local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -244,6 +244,70 @@ end
 checkAndExitZone()
   	end    
 })
+
+Tab:AddButton({
+	Name = "Go outside map TWEEN",
+	Callback = function()
+			local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService") -- Сервис для циклов
+
+local player = Players.LocalPlayer
+local itemSpawns = workspace.Game.Map.ItemSpawns
+
+-- Настройки твина
+local TWEEN_TIME = 10
+local tweenInfo = TweenInfo.new(TWEEN_TIME, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+
+local isTweening = false -- Флаг, чтобы не спамить твинами
+
+local function checkAndExitZone()
+    if isTweening then return end -- Если уже летим, ничего не делаем
+
+    local character = player.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
+    
+    local hrp = character.HumanoidRootPart
+    local charPos = hrp.Position
+    
+    local modelCFrame, modelSize = itemSpawns:GetBoundingBox()
+    local relativePos = modelCFrame:PointToObjectSpace(charPos)
+    
+    -- Проверка зоны
+    local isInside = math.abs(relativePos.X) <= modelSize.X / 2
+                 and math.abs(relativePos.Y) <= modelSize.Y / 2
+                 and math.abs(relativePos.Z) <= modelSize.Z / 2
+
+    if isInside then
+        isTweening = true
+        print("Вылетаем из зоны...")
+        
+        local offsetX = (modelSize.X / 2) + 10 -- Увеличил отступ до 10 для надежности
+        if relativePos.X < 0 then offsetX = -offsetX end
+        
+        local targetWorldPos = modelCFrame:PointToWorldSpace(Vector3.new(offsetX, relativePos.Y, relativePos.Z))
+        
+        local tween = TweenService:Create(hrp, tweenInfo, {CFrame = CFrame.new(targetWorldPos)})
+        
+        hrp.Anchored = true 
+        tween:Play()
+        
+        tween.Completed:Connect(function()
+            hrp.Anchored = false
+            isTweening = false -- Разрешаем проверку снова
+            print("Вылет завершен.")
+        end)
+    end
+end
+
+-- Запускаем проверку каждые 0.5 сек (чтобы не нагружать систему)
+while true do
+    checkAndExitZone()
+    task.wait(0.5)
+end
+  	end    
+})
+
 
 Tab:AddButton({
 	Name = "Remove invis parts",
